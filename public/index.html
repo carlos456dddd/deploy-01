@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <span id="count">value</span>
+    <button id="push">Agregar</button>
+    <button id="pop">Disminuir</button>
+    <button id="zero">Reiniciar</button>
+</body>
+
+<script>
+    const count = document.getElementById('count');
+    const push = document.getElementById('push');
+    const pop = document.getElementById('pop');
+    const zero = document.getElementById('zero');
+
+    fetch('/count').then(value => value.json()
+    ).then(value => {
+        count.textContent = value.count
+    }
+    )
+
+
+    push.onclick = () => {
+        fetch('/count', { method: 'POST' }).then(res => res.json()).then(rs => count.textContent = rs.count)
+    }
+
+
+    pop.onclick = () => {
+        fetch('/count/pop', { method: 'POST' }).then(res => res.json()).then(rs => count.textContent = rs.count)
+    }
+
+    zero.onclick = () => 
+    {
+        fetch('/count/zero', { method: 'POST' }).then(res => res.json()).then(rs => count.textContent = rs.count)
+    }
+
+    // push.onclick(() => fetch('/count/push').then(value => value.json()).then(rest => {
+    //     count.textContent = + rest.pu
+    // })
+    // )
+
+
+
+
+
+</script>
+
+</html>

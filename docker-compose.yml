@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: counter
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql   # Se ejecuta al arrancar
+      - pgdata:/var/lib/postgresql/data                   # Persistencia
+    networks:
+      - counter-net
+
+  app:
+    build: .
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgres://postgres:pass@db:5432/counter
+      JWT_SECRET: cualquiercosa
+      PORT: 8080
+    depends_on:
+      - db
+    networks:
+      - counter-net
+
+volumes:
+  pgdata:
+
+networks:
+  counter-net:
